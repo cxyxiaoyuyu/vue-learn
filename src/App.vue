@@ -4,7 +4,7 @@
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
     </div>
-    <router-view/>
+    <router-view>1111111</router-view>
   </div>
 
 <!-- router-link router-view 是哪来的 ？？？ -->

@@ -9,6 +9,9 @@ class Store {
         // 两个$ Vue 不做处理 即不绑定到this实例上
         $$state: options.state  // 这里变化了会通知页面变化
       },
+      render(h){
+        h('div','hello vnode')
+      }
     })
 
     this._mutations = options.mutations
@@ -19,6 +22,7 @@ class Store {
     this.dispatch = this.dispatch.bind(this)
   }
   get state(){
+    console.log(this._vm,'this vm')
     return this._vm.$data.$$state
   }
   set state(v){

@@ -7,17 +7,43 @@ class KVueRouter {
     this.$options = options
 
     // 处理路由表 避免每次都循环
-    this.routeMap = {}
-    this.$options.routes.forEach(route => {
-      this.routeMap[route.path] = route.component
-    })
+    // this.routeMap = {}
+    // this.$options.routes.forEach(route => {
+    //   this.routeMap[route.path] = route.component
+    // })
 
     // 创建响应式的currentUrl 属性
-    Vue.util.defineReactive(this,'currentUrl','/')
-    // this.currentUrl = '/'
+    // 依赖的组件会重新render
+    // Vue.util.defineReactive(this,'currentUrl','/')
+
+    this.currentUrl = window.location.hash.slice(1) || '/'
+    this.matched = []
+    this.match()
+    console.log(this.matched,'this.matched')
+
     // 监控url变化
     window.addEventListener('hashchange',this.onHashChange.bind(this)) // bind this
     window.addEventListener('load',this.onHashChange.bind(this))
+  }
+  match(routes){
+    routes = routes || this.$options.routes
+
+    for(let route of routes){
+      // 匹配首页
+      if(route.path === '/' && this.currentUrl === '/'){
+        this.matched.push(route)
+      }
+
+      // /about/info
+      if(route.path !== '/' && this.currentUrl.indexOf(route.path) !== -1){
+        this.matched.push(route)
+        if(route.children){
+          this.match(route.children)
+        }
+        return
+      }
+    }
+
   }
   onHashChange(){
     console.log(window.location.hash)
@@ -71,10 +97,27 @@ KVueRouter.install = function(_Vue){
       // console.log('component',component)
       // return h(component)
 
+      // 标记当前router-view深度
+      this.$vnode.data.routerView = true    // 做个标记
+      let depth = 0
+      let parent = this.$parent
+      while(parent){
+        if(parent.$vnode && parent.$vnode.data && parent.$vnode.data.routerView){
+          depth++
+        }
+        parent = parent.$parent
+      }
+      console.log(depth,'depth')
+
       // 从路由表中寻找组件
-      let {routeMap,currentUrl} = this.$router
-      const component = routeMap[currentUrl]
-      console.log(component,'component')
+      // let {routeMap,currentUrl} = this.$router
+      // const component = routeMap[currentUrl]
+      // console.log(component,'component')
+      // return h(component)
+      console.log(this.$router.matched,'this.matched')
+
+      const route = this.$router.matched[depth]
+      const component = route.component
       return h(component)
     }
   })
