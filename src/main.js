@@ -7,11 +7,16 @@ import App from './App.vue'
 import Plugin from './utils/utils'
 
 import router from './router'
+import store from './store'
 Vue.use(Plugin)
 
+console.log(store,'store')
 Vue.config.productionTip = false
 
 new Vue({
-  router,  // 为什么要在这挂载router ？？？
+  // 为什么要在这挂载router ？？？
+  router,
+
+  store,
   render: h => h(App)
 }).$mount('#app')
