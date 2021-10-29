@@ -72,7 +72,8 @@ KVueRouter.install = function(_Vue){
       // return h(component)
 
       // 从路由表中寻找组件
-      const component = this.$router.routeMap[this.$router.currentUrl]
+      let {routeMap,currentUrl} = this.$router
+      const component = routeMap[currentUrl]
       return h(component)
     }
   })
