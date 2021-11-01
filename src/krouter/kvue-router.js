@@ -19,7 +19,6 @@ class KVueRouter {
     this.currentUrl = window.location.hash.slice(1) || '/'
     this.matched = []
     this.match()
-    console.log(this.matched,'this.matched')
 
     // 监控url变化
     window.addEventListener('hashchange',this.onHashChange.bind(this)) // bind this
@@ -46,7 +45,6 @@ class KVueRouter {
 
   }
   onHashChange(){
-    console.log(window.location.hash)
     this.currentUrl = window.location.hash.slice(1)
   }
 }
@@ -107,14 +105,12 @@ KVueRouter.install = function(_Vue){
         }
         parent = parent.$parent
       }
-      console.log(depth,'depth')
 
       // 从路由表中寻找组件
       // let {routeMap,currentUrl} = this.$router
       // const component = routeMap[currentUrl]
       // console.log(component,'component')
       // return h(component)
-      console.log(this.$router.matched,'this.matched')
 
       const route = this.$router.matched[depth]
       const component = route.component
