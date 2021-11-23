@@ -1,3 +1,20 @@
+// 数组响应式
+// 1 替换数组原型中的7个方法
+const originalProto = Array.prototype;
+const arrayProto = Object.create(originalProto);
+// 覆盖
+['push','pop','shift','unshift'].forEach(method => {
+
+  arrayProto[method] = function(){
+    // 原始操作
+    originalProto[method].apply(this,arguments)
+
+    // 通知更新
+    console.log('执行',method,'操作')
+  }
+})
+
+// 对象响应式
 function defineReactive(obj,key,val){
   // 递归
   observe(val)
@@ -23,9 +40,19 @@ function observe(obj){
     return
   }
 
-  Object.keys(obj).forEach(key=>{
-    defineReactive(obj,key,obj[key])
-  })
+  if(Array.isArray(obj)){
+    // 覆盖实例原型 替换7个变更操作
+    obj.__proto__ = arrayProto
+    // 对数组内部的元素执行响应化
+    const keys = Object.keys(obj)
+    for(let i=0;i<obj.length;i++){
+      observe(obj[i])
+    }
+  }else{
+    Object.keys(obj).forEach(key=>{
+      defineReactive(obj,key,obj[key])
+    })
+  }
 }
 
 const obj = {foo: 'foo',bar:{a:0},arr:[1,2,3]}

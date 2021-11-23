@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app"></div>
+
+  <script src="../node_modules/snabbdom/dist"></script>
+  <script>
+    const obj = {foo: 'foooo'}
+    const {init,h} = snabbdom
+    let vnode  // 保存之前的旧的虚拟dom
+
+    // 获取patch函数 对比两个虚拟dom 执行dom操作
+    const patch = init([])
+
+    // 执行初始化
+    vnode = patch(app,h('div#app',obj.foo))  // app 是宿主  后面是虚拟dom
+    console.log(vnode)
+
+    defineReactive(obj,'foo','fooooo')
+
+    obj.foo = 'new foo value'
+
+    // 使用虚拟dom做更新
+    function update(){
+      vnode = patch(vnode,h('div#app',obj.foo))
+    }
+
+    function defineReactive(obj,key,val){
+      obj.defineReactive(key,{
+        get(){
+          return val
+        },
+        set(newVal){
+          if(newVal !== val){
+            val = newVal
+            update()
+          }
+        }
+      })
+    }
+
+  </script> 
+</body>
+</html>

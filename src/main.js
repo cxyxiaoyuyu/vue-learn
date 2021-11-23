@@ -13,10 +13,13 @@ Vue.use(Plugin)
 console.log(store,'store')
 Vue.config.productionTip = false
 
-new Vue({
+const app =  new Vue({
   // 为什么要在这挂载router ？？？
   router,
 
   store,
   render: h => h(App)
 }).$mount('#app')
+
+console.log(app)
+console.log(app.$options.render)

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <!-- <p @click="addCounter">{{counter}}</p> -->
+    <p @click="changeArr">{{arr}}</p>
+    <!-- <p>{{arr[0]}}</p>
+    <p>{{arr[1]}}</p>
+    <p>{{arr[2]}}</p> -->
+    <!-- <p v-text="counter"></p> -->
+    <!-- <p v-html="desc"></p> -->
+    <!-- <input type="text" v-model="desc" style="width:300px"> -->
+    <!-- <p>{{xxx}}</p>
+    <p>{{xxx.obj}}</p>
+    <p>{{xxx.obj.foo}}</p> -->
+  </div>
+  <script src="./compile.js"></script>
+  <script src="./kvue.js"></script>
+  <script> 
+    const app = new KVue({ 
+      el:'#app',
+      data: { 
+        // counter: 1,
+        xxx: {obj:{foo:'foo'}},
+        arr: [1,2,3],
+        // desc: '<span style="color: red">解析html的指令</span>'
+      }, 
+      methods: {
+        addCounter(){
+          this.counter++
+        },
+        changeArr(){
+          this.arr[1] = 5
+          // this.arr.push(6)
+        }
+      }
+    })
+    app.counter += 1
+    app.arr.push(4)
+    app.$set(app.arr,0,5)
+    console.log(app.arr)
+    // setInterval(() => { 
+    //   app.counter++ 
+    // }, 1000); 
+  </script>
+</body>
+</html>
+
+<!-- 
+  v-for
+  arr[0]
+  arr[1] = 2  vue也没有实现
+-->
