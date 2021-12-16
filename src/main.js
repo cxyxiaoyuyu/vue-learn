@@ -8,6 +8,8 @@ import Plugin from './utils/utils'
 
 import router from './router'
 import store from './store'
+
+import '@/assets'
 Vue.use(Plugin)
 
 console.log(store,'store')
